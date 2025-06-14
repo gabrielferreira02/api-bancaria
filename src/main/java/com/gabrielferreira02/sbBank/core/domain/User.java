@@ -12,7 +12,6 @@ public record User(UUID id,
                    String cep,
                    String cepComplement,
                    String phone,
-                   LocalDateTime createdAt,
-                   Account account
+                   LocalDateTime createdAt
                    ) {
 }
