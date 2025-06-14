@@ -1,5 +1,7 @@
 package com.gabrielferreira02.sbBank.core.domain;
 
+import com.gabrielferreira02.sbBank.core.enums.StatusType;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
