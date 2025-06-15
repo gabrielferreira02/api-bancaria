@@ -8,8 +8,10 @@ import java.util.UUID;
 
 public record Transaction(UUID id,
                           BigDecimal amount,
+                          double transferFee,
+                          BigDecimal feeAmount,
                           TransactionType type,
                           LocalDateTime createdAt,
-                          User sender,
-                          User receiver) {
+                          Account sender,
+                          Account receiver) {
 }
