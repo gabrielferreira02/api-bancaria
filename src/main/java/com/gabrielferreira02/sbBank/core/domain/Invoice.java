@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 public record Invoice(UUID id,
+                      Card card,
                       BigDecimal totalAmount,
                       LocalDateTime startDate,
                       LocalDateTime endDate,
