@@ -6,7 +6,7 @@ import java.util.UUID;
 
 public record Card(UUID id,
                    String number,
-                   User user,
+                   Account account,
                    BigDecimal limit,
                    LocalDateTime createdAt,
                    LocalDateTime updatedAt,
