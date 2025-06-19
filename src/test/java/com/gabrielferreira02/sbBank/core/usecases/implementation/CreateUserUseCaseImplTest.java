@@ -3,6 +3,7 @@ package com.gabrielferreira02.sbBank.core.usecases.implementation;
 import com.gabrielferreira02.sbBank.core.domain.User;
 import com.gabrielferreira02.sbBank.core.exceptions.InvalidCepException;
 import com.gabrielferreira02.sbBank.core.exceptions.InvalidCpfException;
+import com.gabrielferreira02.sbBank.core.exceptions.UserAlreadyExistsException;
 import com.gabrielferreira02.sbBank.core.gateways.UserGateway;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -36,9 +37,9 @@ class CreateUserUseCaseImplTest {
                 "user@email.com",
                 "12345678",
                 false,
-                "22770-640",
-                "131 bl 5 ap 404",
-                "5521976027679",
+                "22660-320",
+                "131 casa A",
+                "5521912345678",
                 null
         );
 
@@ -85,9 +86,9 @@ class CreateUserUseCaseImplTest {
                 "user@email.com",
                 "12345678",
                 false,
-                "22770-640",
-                "131 bl 5 ap 404",
-                "5521976027679",
+                "22660-320",
+                "131 casa A",
+                "5521912345678",
                 null
         );
 
@@ -110,8 +111,8 @@ class CreateUserUseCaseImplTest {
                 "12345678",
                 false,
                 "1111-111",
-                "131 bl 5 ap 404",
-                "5521976027679",
+                "131 casa A",
+                "5521912345678",
                 null
         );
 
@@ -132,9 +133,9 @@ class CreateUserUseCaseImplTest {
                 "user@email.com",
                 "12345678",
                 false,
-                "22770-640",
-                "131 bl 5 ap 404",
-                "5521976027679",
+                "22660-320",
+                "131 casa A",
+                "5521912345678",
                 null
         );
 
@@ -153,9 +154,9 @@ class CreateUserUseCaseImplTest {
                 "",
                 "12345678",
                 false,
-                "22770-640",
-                "131 bl 5 ap 404",
-                "5521976027679",
+                "22660-320",
+                "131 casa A",
+                "5521912345678",
                 null
         );
 
@@ -175,8 +176,8 @@ class CreateUserUseCaseImplTest {
                 "12345678",
                 false,
                 "",
-                "131 bl 5 ap 404",
-                "5521976027679",
+                "131 casa A",
+                "5521912345678",
                 null
         );
 
@@ -195,8 +196,8 @@ class CreateUserUseCaseImplTest {
                 "user@email.com",
                 "12345678",
                 false,
-                "22770-640",
-                "131 bl 5 ap 404",
+                "22660-320",
+                "131 casa A",
                 "",
                 null
         );
@@ -216,9 +217,9 @@ class CreateUserUseCaseImplTest {
                 "user@email.com",
                 "12345678",
                 false,
-                "22770-640",
+                "22660-320",
                 "",
-                "5521976027679",
+                "5521912345678",
                 null
         );
 
@@ -237,8 +238,8 @@ class CreateUserUseCaseImplTest {
                 "user@email.com",
                 "12345678",
                 false,
-                "22770-640",
-                "131 bl 5 ap 404",
+                "22660-320",
+                "131 casa A",
                 "7602767",
                 null
         );
@@ -258,13 +259,37 @@ class CreateUserUseCaseImplTest {
                 "user@email.com",
                 "12345",
                 false,
-                "22770-640",
-                "131 bl 5 ap 404",
-                "5521976027679",
+                "22660-320",
+                "131 casa A",
+                "5521912345678",
                 null
         );
 
         assertThrows(IllegalArgumentException.class, () -> {
+            createUserUseCase.execute(userInput);
+        });
+    }
+
+    @Test
+    @DisplayName("Falha ao criar usuario devido a cpf já cadastrado")
+    void error10() {
+        User userInput = new User(
+                null,
+                "User",
+                "17824829707",
+                "user@email.com",
+                "12345678",
+                false,
+                "22660-320",
+                "131 casa A",
+                "5521912345678",
+                null
+        );
+
+        doReturn(true).when(userGateway).validateCpf(userInput.cpf());
+        doReturn(true).when(userGateway).validateCep(userInput.cep());
+        doReturn(userInput).when(userGateway).findByCpf(userInput.cpf());
+        assertThrows(UserAlreadyExistsException.class, () -> {
             createUserUseCase.execute(userInput);
         });
     }
