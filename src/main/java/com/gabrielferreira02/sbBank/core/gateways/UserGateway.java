@@ -7,4 +7,5 @@ public interface UserGateway {
     boolean validateCep(String cep);
     User findByCpf(String cpf);
     User createUser(User user);
+    User findByEmail(String email);
 }
