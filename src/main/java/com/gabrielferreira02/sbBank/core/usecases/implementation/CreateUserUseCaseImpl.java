@@ -1,6 +1,7 @@
 package com.gabrielferreira02.sbBank.core.usecases.implementation;
 
 import com.gabrielferreira02.sbBank.core.domain.User;
+import com.gabrielferreira02.sbBank.core.exceptions.EmailAlreadyRegisteredException;
 import com.gabrielferreira02.sbBank.core.exceptions.InvalidCepException;
 import com.gabrielferreira02.sbBank.core.exceptions.InvalidCpfException;
 import com.gabrielferreira02.sbBank.core.exceptions.UserAlreadyExistsException;
@@ -47,5 +48,6 @@ public class CreateUserUseCaseImpl implements CreateUserUseCase {
         if(!userGateway.validateCep(user.cep())) throw new InvalidCepException("Cep inválido");
         if(!userGateway.validateCpf(user.cpf())) throw new InvalidCpfException("Cpf inválido");
         if(userGateway.findByCpf(user.cpf()) != null) throw new UserAlreadyExistsException("Cpf já cadastrado");
+        if(userGateway.findByEmail(user.email()) != null) throw new EmailAlreadyRegisteredException("Email já cadastrado");
     }
 }

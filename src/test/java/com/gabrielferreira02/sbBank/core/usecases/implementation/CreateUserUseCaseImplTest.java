@@ -1,6 +1,7 @@
 package com.gabrielferreira02.sbBank.core.usecases.implementation;
 
 import com.gabrielferreira02.sbBank.core.domain.User;
+import com.gabrielferreira02.sbBank.core.exceptions.EmailAlreadyRegisteredException;
 import com.gabrielferreira02.sbBank.core.exceptions.InvalidCepException;
 import com.gabrielferreira02.sbBank.core.exceptions.InvalidCpfException;
 import com.gabrielferreira02.sbBank.core.exceptions.UserAlreadyExistsException;
@@ -59,6 +60,7 @@ class CreateUserUseCaseImplTest {
         doReturn(true).when(userGateway).validateCpf(userInput.cpf());
         doReturn(true).when(userGateway).validateCep(userInput.cep());
         doReturn(null).when(userGateway).findByCpf(userInput.cpf());
+        doReturn(null).when(userGateway).findByEmail(userInput.email());
         doReturn(userOutput).when(userGateway).createUser(any(User.class));
 
         User response = createUserUseCase.execute(userInput);
@@ -290,6 +292,31 @@ class CreateUserUseCaseImplTest {
         doReturn(true).when(userGateway).validateCep(userInput.cep());
         doReturn(userInput).when(userGateway).findByCpf(userInput.cpf());
         assertThrows(UserAlreadyExistsException.class, () -> {
+            createUserUseCase.execute(userInput);
+        });
+    }
+
+    @Test
+    @DisplayName("Falha ao criar usuario devido a email já cadastrado")
+    void error11() {
+        User userInput = new User(
+                null,
+                "User",
+                "17824829707",
+                "user@email.com",
+                "12345678",
+                false,
+                "22660-320",
+                "131 casa A",
+                "5521912345678",
+                null
+        );
+
+        doReturn(true).when(userGateway).validateCpf(userInput.cpf());
+        doReturn(true).when(userGateway).validateCep(userInput.cep());
+        doReturn(null).when(userGateway).findByCpf(userInput.cpf());
+        doReturn(userInput).when(userGateway).findByEmail(userInput.email());
+        assertThrows(EmailAlreadyRegisteredException.class, () -> {
             createUserUseCase.execute(userInput);
         });
     }
