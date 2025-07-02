@@ -24,6 +24,8 @@ class CreateAccountUseCaseImplTest {
 
     @Mock
     private AccountGateway accountGateway;
+    @Mock
+    private CreateAccountNumberUseCaseImpl createAccountNumberUseCase;
     @InjectMocks
     private CreateAccountUseCaseImpl createAccountUseCase;
 
@@ -53,7 +55,7 @@ class CreateAccountUseCaseImplTest {
         );
 
         doReturn(account).when(accountGateway).createAccount(any(Account.class));
-        doReturn("12345678910").when(accountGateway).generateAccountNumber();
+        doReturn("12345678910").when(createAccountNumberUseCase).execute();
 
         Account response = createAccountUseCase.execute(userInput);
 
