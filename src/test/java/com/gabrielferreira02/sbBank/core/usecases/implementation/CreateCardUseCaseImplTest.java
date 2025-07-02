@@ -26,6 +26,8 @@ class CreateCardUseCaseImplTest {
 
     @Mock
     private CardGateway cardGateway;
+    @Mock
+    private CreateCardNumberUseCaseImpl createCardNumberUseCase;
     @InjectMocks
     private CreateCardUseCaseImpl createCardUseCase;
 
@@ -63,7 +65,7 @@ class CreateCardUseCaseImplTest {
                 false
         );
 
-        doReturn("123456789").when(cardGateway).generateNumber();
+        doReturn("123456789").when(createCardNumberUseCase).execute();
         doReturn(card).when(cardGateway).createCard(any(Card.class));
 
         Card response = createCardUseCase.execute(account, paymentDay);
